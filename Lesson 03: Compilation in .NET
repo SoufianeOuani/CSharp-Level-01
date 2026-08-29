@@ -1,0 +1,88 @@
+# Lesson 03: Compilation in .NET (From Source Code to Machine Execution)
+
+To understand how C# achieves both **portability (write once, run anywhere)** and **high-performance execution**, you need to look at how .NET compiles code. 
+
+Unlike traditional compiled languages like C++ (which compile directly to machine code) or purely interpreted languages like Python (which interpret code line-by-line), .NET uses a **two-stage compilation model**.
+
+---
+
+## 1. The Two-Stage Compilation Process
+
+When you write C# and click **Run** or use the `dotnet build` / `dotnet run` commands, your code passes through two distinct compilation phases:
+[ C# Source Code (.cs) ]
+│
+▼ (Phase 1: Roslyn Compiler - csc.exe)
+[ Intermediate Language (CIL / MSIL) + Metadata ]  <-- Packaged into .dll / .exe
+│
+▼ (Phase 2: Common Language Runtime - CLR)
+[ Just-In-Time (JIT) Compiler ]
+│
+▼
+[ Native Machine Code (x64 / ARM64 / x86 CPU Instructions) ]
+│
+▼
+[ CPU Execution ]
+
+---
+
+## 2. Deep Dive: Phase 1 (Compile-Time)
+
+* **Input:** Human-readable source code files (`.cs`).
+* **Engine:** The C# compiler (**Roslyn** / `csc`).
+* **Output:** An **Assembly** (`.dll` or `.exe`).
+
+### What is Inside a .NET Assembly?
+1. **CIL (Common Intermediate Language):** Often called **IL** or **MSIL**. It is an assembly-like, CPU-independent, low-level instruction set. IL does not know whether it will run on an Intel x64 CPU, an AMD processor, or an Apple Silicon ARM64 chip.
+2. **Metadata:** Comprehensive binary data describing every type, class, method, field, parameter, and interface defined in your code.
+3. **Manifest:** Data describing the assembly itself (identity, version, security permissions, and external assembly dependencies).
+
+> 💡 **Why IL?** Intermediate Language is the key to cross-platform compatibility. It standardizes language outputs so that C#, F#, and VB.NET all compile into the same intermediate format.
+
+---
+
+## 3. Deep Dive: Phase 2 (Runtime & Execution)
+
+* **Input:** The Assembly containing IL and Metadata.
+* **Engine:** The **CLR (Common Language Runtime)** and its **JIT (Just-In-Time) Compiler**.
+* **Output:** Native machine code (binary zeros and ones specific to your CPU).
+
+### How the JIT Compiler Works:
+1. When you run an application, the operating system launches the **CLR**.
+2. The CLR loads the assembly, reads the **Metadata**, and verifies type safety and security rules.
+3. When a method is called for the first time, the **JIT Compiler** compiles that method's IL instructions into native machine code for the host CPU architecture (x64, ARM64, etc.).
+4. The generated native code is stored (cached) in memory.
+5. Subsequent calls to that method execute directly from native CPU instructions with **zero compilation overhead**.
+
+---
+
+## 4. JIT Compilation vs. AOT Compilation
+
+Modern .NET offers multiple compilation strategies based on deployment needs:
+
+| Feature | Just-In-Time (JIT) Compilation | Ahead-Of-Time (Native AOT) |
+| :--- | :--- | :--- |
+| **When it compiles** | At application runtime (on demand). | At build time (before deployment). |
+| **Output** | IL assembly executed by CLR. | Standalone native binary machine code. |
+| **Startup Time** | Small initial warm-up cost per method. | **Instant / Near-zero startup time.** |
+| **Memory Footprint** | Higher (includes JIT engine & runtime cache). | **Significantly lower memory usage.** |
+| **Cross-Platform Delivery** | Ship one `.dll` across all supported OS platforms. | Build separate binaries for each target OS/CPU. |
+| **Primary Use Cases** | Typical web APIs, desktop apps, dynamic workloads. | Cloud-native microservices, serverless / AWS Lambda, CLI tools. |
+
+---
+
+## 5. Practical Comparison: C# vs. C++ vs. Python
+
+| Language | Compilation Model | Intermediate Step? | Execution Speed | Portability |
+| :--- | :--- | :--- | :--- | :--- |
+| **C++** | Pure Ahead-Of-Time (Direct to Native) | No | Extremely Fast | Low (Recompile per OS/CPU) |
+| **C# (.NET)** | **Two-Stage (Source ➔ IL ➔ JIT Native)** | **Yes (CIL / MSIL)** | **Very Fast (Near-Native)** | **High (Cross-platform)** |
+| **Python** | Bytecode Interpretation | Yes (Bytecode) | Slower | High (Interpreted per OS) |
+
+---
+
+## 6. Key Takeaways
+
+* C# does **not** compile directly to machine code on `dotnet build`. It compiles into **Common Intermediate Language (CIL)** and **Metadata**.
+* The **CLR (Common Language Runtime)** uses the **JIT Compiler** to turn IL into machine code on demand at runtime.
+* Once a method is JIT-compiled, its native instructions are cached in memory for high subsequent execution speed.
+* Modern .NET also supports **Native AOT**, allowing ahead-of-time compilation directly to native binaries for cloud and serverless performance.
