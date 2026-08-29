@@ -1,0 +1,55 @@
+# Lesson 01: Library vs. Framework vs. Platform
+
+Before writing code in C#, it is essential to understand the architectural environment you are working in. In the .NET ecosystem, terms like **Library**, **Framework**, and **Platform** are frequently used, but each plays a distinct role in how applications are designed, built, and executed.
+
+---
+
+## 1. Core Definitions
+
+### 📦 Library
+A **Library** is a collection of pre-written, reusable code, classes, and helper methods that you pull into your application to perform specific tasks. 
+
+* **Control:** You are in full control of the execution flow.
+* **Usage:** Your code decides *when* and *where* to call the library methods.
+* **Analogy:** A toolkit. You choose the specific tool (e.g., a hammer or a screwdriver) when you need it, but you decide how the house is built.
+* **C# Example:** `Newtonsoft.Json` (for JSON parsing) or `System.Math` (for mathematical operations).
+
+```csharp
+// You control the call and flow
+double result = Math.Sqrt(144);
+Console.WriteLine(result);
+
+🏗️ FrameworkA Framework provides a complete skeletal structure and architecture for building applications. 
+It dictates how your application should be designed and manages the lifecycle of your code.  
+Control: The framework is in control of the flow.
+Usage: You write code to fit into specific slots, hooks, or interfaces defined by the framework.
+The framework calls your code, not the other way around (Inversion of Control / The Hollywood Principle: "Don't call us, we'll call you").
+Analogy: A pre-built house frame. The rooms, foundation, and electrical wiring paths are already set; you only fill in the interior paint and furniture.
+C# Example: ASP.NET Core (for web applications/APIs), WPF (for desktop UI), or Entity Framework Core (for database access).
+C#// ASP.NET Core calls this method automatically when a matching HTTP request arrives
+[HttpGet("/greet")]
+public IActionResult Greet()
+{
+    return Ok("Hello, World!");
+}
+🌍 PlatformA Platform is the underlying execution environment and toolchain that allows software to run.
+It encompasses the runtime engine, hardware abstraction layer, compiler, build tools, and standard libraries required to execute applications across operating systems.
+Control: It provides the entire foundation and environment hosting the framework and libraries.
+Analogy: The land and municipal utilities (power grid, water supply) upon which the house and interior are built.
+C# Example: .NET (including the Common Language Runtime CLR, the Base Class Library BCL, and the dotnet CLI).
+2. Direct ComparisonDimensionLibraryFrameworkPlatformPrimary PurposeSolves a specific, isolated problem.
+Defines application structure and architecture.
+Executes, compiles, and hosts applications.
+Control FlowYour code calls the library.
+The framework calls your code (Inversion of Control).
+Manages execution, memory, and runtime lifecycle.
+FlexibilityHigh (easy to replace or swap).
+Low/Medium (code is bound to framework rules).
+Fixed (dictated by the target runtime/OS).
+Examples in .NETNewtonsoft.Json, Dapper, AutoMapper  ASP.NET Core, MAUI, EF Core  .NET 8, CLR, Mono[cite: 1]
+3. How They Fit Together in .NETUnderstanding how these three layers interact provides a clear mental model of modern software development[cite: 1]:Platform (.NET): Provides the runtime engine (CLR), garbage collector, JIT compiler, and the CLI to execute applications on Windows, Linux, or macOS[cite: 1].
+Framework (ASP.NET Core / WPF): Sits on top of the platform, providing the structural rules, routing, and lifecycle management for your application type[cite: 1].
+Library (Newtonsoft.Json / Custom Class Library): Integrated into your application to handle specific features like serialization, logging, or mathematics[cite: 1].
+4. Key TakeawaysInversion of Control (IoC) is the defining technical distinction between a library and a framework[cite: 1].
+You call a Library; a Framework calls you; a Platform runs everything[cite: 1].
+C# is the programming language, .NET is the Platform, ASP.NET Core is a Framework, and tools like Dapper are Libraries[cite: 1].
