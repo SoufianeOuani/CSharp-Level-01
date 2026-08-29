@@ -1,0 +1,54 @@
+# Lesson 02: What is .NET? Ecosystem & Evolution
+
+To effectively build software with C#, you need to understand the platform behind it. C# is the programming language, but **.NET** is the engine, runtime, and ecosystem that powers your code.
+
+---
+
+## 1. What is .NET?
+
+**.NET** is a free, cross-platform, open-source developer platform created by Microsoft for building applications across diverse domains.
+
+It is composed of four primary components:
+
+* **Languages:** C#, F#, and Visual Basic.
+* **Common Language Runtime (CLR):** The execution engine that handles Garbage Collection (automatic memory management), thread management, security, and Just-In-Time (JIT) compilation from Intermediate Language (IL) to native machine code.
+* **Base Class Library (BCL):** A standard collection of pre-built classes and primitives for data structures, file I/O, networking, reflection, and serialization.
+* **Developer Toolchain:** The `dotnet` CLI, Roslyn compiler, and IDE integrations (Visual Studio, VS Code, Rider).
+
+---
+
+## 2. .NET Framework vs. .NET Core vs. Modern .NET
+
+Over the years, the .NET ecosystem went through a major transformation to become modern, lightweight, and cross-platform.
+
+| Dimension | .NET Framework (Legacy) | .NET Core (2016–2019) | Modern .NET (.NET 5+) |
+| :--- | :--- | :--- | :--- |
+| **Release Era** | 2002 – 2019 | 2016 – 2019 | 2020 – Present (.NET 8 LTS, 9) |
+| **Operating System** | **Windows only** | Cross-platform (Win, Mac, Linux) | Cross-platform + Mobile / WebAssembly |
+| **Source Model** | Closed source (Proprietary) | Open-source | Open-source (Fully community-driven) |
+| **Deployment** | Machine-wide installation | Side-by-side / Self-contained | Side-by-side / AOT / Container-first |
+| **Architecture** | Heavy, monolithic | Modular (NuGet packages) | Unified, lightweight, high-performance |
+| **Current Status** | Maintenance only (v4.8.x) | Replaced | **Active industry standard** |
+
+---
+
+## 3. What Can We Build With .NET?
+
+Modern .NET provides a single unified platform capable of targeting almost any software discipline:
+
+* **🌐 Web Applications & Backend APIs:** Build robust REST APIs, gRPC services, and full-stack interactive web apps using **ASP.NET Core** and **Blazor**.
+* **☁️ Cloud & Microservices:** Deploy containerized microservices to Docker and Kubernetes using **.NET Aspire** and native cloud integrations.
+* **📱 Mobile Applications:** Create cross-platform native apps for iOS and Android with a shared codebase using **.NET MAUI**.
+* **💻 Desktop Software:** Build Windows and multi-platform desktop client tools with **WPF**, **WinForms**, and **WinUI 3**.
+* **🎮 Game Development:** Write gameplay logic and game engines with C# in **Unity** and **Godot**.
+* **🤖 AI & Machine Learning:** Integrate LLMs, semantic search, and predictive models using **ML.NET** and Microsoft's **Semantic Kernel**.
+* **⚡ IoT & Embedded Systems:** Run C# applications on Raspberry Pi, single-board computers, and sensor controllers.
+
+---
+
+## 4. Key Takeaways
+
+* **.NET Framework** was the original Windows-only runtime (2002–2019).
+* **.NET Core** was the rewrite that made .NET open-source and cross-platform.
+* In 2020, Microsoft unified them under **.NET** (.NET 5, 6, 7, 8, 9), dropping "Core" and "Framework" to form one unified runtime.
+* Learning C# gives you immediate access to Web, Mobile, Desktop, Cloud, AI, and Game development under a single ecosystem.
