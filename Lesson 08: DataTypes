@@ -1,0 +1,95 @@
+# Lesson 08: Data Types in C# (Value Types, Reference Types & Memory Architecture)
+
+In C#, every variable, constant, and expression has a type[cite: 30]. The type tells the compiler how much memory to allocate, the minimum and maximum values it can represent, and what operations are valid on that data[cite: 30].
+
+Under the Common Type System (CTS), all data types in C# inherit from the root base type `System.Object` and are strictly partitioned into two categories: **Value Types** and **Reference Types**[cite: 10, 30].
+
+---
+
+## 1. Value Types vs. Reference Types: Memory Layout
+
+The fundamental distinction lies in **what** the variable holds and **where** it lives in RAM:
+
+* **Value Types:** The variable holds the **actual data directly**. They are allocated inline on the **Stack** (or within the object instance that encloses them). When copied, a duplicate of the value is created.
+* **Reference Types:** The variable holds a **memory address (pointer)** on the Stack that references the actual object residing on the **Managed Heap**[cite: 10]. When copied, only the memory reference pointer is duplicated, pointing to the exact same heap memory.
++------------------+                    +------------------------------------+
+|      STACK       |                    |           MANAGED HEAP             |
++------------------+                    +------------------------------------+
+|  age = 25        |  <-- Value Type    |                                    |
+|                  |                    |                                    |
+|  namePtr = 0x4A0 | ──────────────────>|  0x4A0: "Hello, .NET" (String Obj) |
++------------------+                    +------------------------------------+
+---
+
+## 2. Complete Value Types Breakdown
+
+Value types derive from `System.ValueType` (which derives from `System.Object`).
+
+### A. Integral Types (Whole Numbers)
+| C# Keyword | CTS Type | Memory Size | Signed? | Min / Max Value Range |
+| :--- | :--- | :--- | :--- | :--- |
+| `sbyte` | `System.SByte` | 1 Byte (8 bits) | Yes | `-128` to `127` |
+| `byte` | `System.Byte` | 1 Byte (8 bits) | No | `0` to `255` |
+| `short` | `System.Int16` | 2 Bytes (16 bits) | Yes | `-32,768` to `32,767` |
+| `ushort` | `System.UInt16` | 2 Bytes (16 bits) | No | `0` to `65,535` |
+| `int` | `System.Int32` | 4 Bytes (32 bits) | Yes | `-2,147,483,648` to `2,147,483,647` |
+| `uint` | `System.UInt32` | 4 Bytes (32 bits) | No | `0` to `4,294,967,295` |
+| `long` | `System.Int64` | 8 Bytes (64 bits) | Yes | `-9.22 × 10^18` to `9.22 × 10^18` |
+| `ulong` | `System.UInt64` | 8 Bytes (64 bits) | No | `0` to `18.44 × 10^18` |
+
+### B. Floating-Point & High-Precision Types
+| C# Keyword | CTS Type | Memory Size | Precision | Literal Suffix | Best Used For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `float` | `System.Single` | 4 Bytes | ~6–9 digits | `f` or `F` (e.g., `3.14f`) | Graphics, gaming engines |
+| `double` | `System.Double` | 8 Bytes | ~15–17 digits | None or `d` (default) | Scientific computations |
+| `decimal` | `System.Decimal` | 16 Bytes | 28–29 digits | `m` or `M` (e.g., `99.99m`) | Financial math, money, tax |
+
+### C. Boolean & Character Types
+* **`bool` (`System.Boolean`):** 1 Byte. Stores `true` or `false`[cite: 30]. Unlike C++, integers (`0` or `1`) cannot be implicitly evaluated as booleans.
+* **`char` (`System.Char`):** 2 Bytes (16-bit). Stores a single Unicode character represented in single quotes (`'A'`, `'\u0041'`)[cite: 30].
+
+### D. User-Defined Value Types
+* **`struct`:** Custom lightweight composite value type.
+* **`enum`:** Strongly typed set of named integral constants.
+
+---
+
+## 3. Reference Types Breakdown
+
+Reference types inherit directly from `System.Object`.
+
+### Built-in Reference Types
+* **`object` (`System.Object`):** The ultimate base class for all .NET types[cite: 10]. Any value or reference type can be assigned to an object.
+* **`string` (`System.String`):** A sequence of Unicode characters[cite: 30]. 
+  * *Crucial Note:* Strings are **immutable**. Any operation that appears to alter a string creates a new string object on the heap.
+* **`dynamic`:** Bypasses compile-time type verification; member lookups resolve dynamically at runtime.
+
+### User-Defined Reference Types
+* **`class`:** The fundamental OOP blueprint for objects.
+* **`interface`:** Defines a behavioral contract that classes or structs implement.
+* **`delegate`:** A type-safe function pointer referencing methods.
+* **`record` (class record):** Immutable reference types featuring built-in value-based equality.
+* **Arrays (`int[]`, `string[]`):** All arrays in C# are reference types allocated on the Managed Heap, even if their elements are value types.
+
+---
+
+## 4. Default Values & Sizing Inspection
+
+Variables declared without an explicit initial value (such as class fields) automatically take their type's **default value**:
+
+| Type | Default Value |
+| :--- | :--- |
+| All Integral Types (`byte`, `int`, etc.) | `0` |
+| Floating-Point Types (`float`, `double`) | `0.0` |
+| `decimal` | `0.0m` |
+| `bool` | `false` |
+| `char` | `'\0'` (Null character) |
+| All Reference Types (`string`, `class`, arrays) | `null` |
+
+```csharp
+// Inspecting sizes and limits using built-in C# operators
+Console.WriteLine(sizeof(int));        // 4 (bytes)
+Console.WriteLine(int.MinValue);       // -2147483648
+Console.WriteLine(int.MaxValue);       // 2147483647
+Console.WriteLine(default(decimal));   // 0
+5. Direct Comparison: Value vs. Reference TypesCharacteristicValue TypesReference TypesMemory AllocationStack (or enclosed within parent heap object)[cite: 10]Managed Heap (pointer stored on Stack)[cite: 10]Assignment BehaviorCopies the actual value data (Independent copies)Copies the memory reference pointer (Shared state)Memory CleanupAutomatically reclaimed when stack frame exitsReclaimed asynchronously by the Garbage Collector (GC)[cite: 10]Can hold null?No (unless declared as Nullable: int?)Yes (default is null)Inheritance BaseSystem.ValueType → System.ObjectDirectly from System.Object6. Key TakeawaysC# types are strictly separated into Value Types (stored directly) and Reference Types (stored via heap pointer)[cite: 10].Integers default to int (Int32), and decimals default to double (Double)[cite: 30].Always suffix financial numeric literals with m to utilize decimal and avoid IEEE-754 floating-point rounding errors[cite: 30].Strings are reference types, but they exhibit value-like semantics and are strictly immutable.
