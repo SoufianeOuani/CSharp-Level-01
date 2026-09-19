@@ -1,0 +1,31 @@
+# Lesson 08: Variables in C#
+
+A **variable** is a named storage location in memory used to hold data that an application can read and modify during execution. Because C# is a **strongly typed language**, every variable must have a designated type specifying the kind of data it stores, how much memory it occupies, and the operations that can be performed on it.
+
+---
+
+## 1. Variable Declaration and Initialization
+
+In C#, you declare a variable by specifying its **data type** followed by its **identifier (name)**.
+
+```csharp
+// Declaration only (allocated, but uninitialized)
+int age;
+
+// Initialization (assignment)
+age = 25;
+
+// Declaration and initialization in one line (standard practice)
+int score = 100;
+
+// Multiple variables of the same type
+int x = 10, y = 20, z = 30;
+
+⚠️ Definite Assignment Rule: C# enforces safety by forbidding the read of an uninitialized local variable. Attempting to use a local variable before assigning it a value results in a compile-time error (Use of unassigned local variable).   2. Fundamental Built-in Data TypesTypeCTS EquivalentSizeDescriptionExample LiteralintSystem.Int324 Bytes32-bit signed integer   42   longSystem.Int648 Bytes64-bit signed integer   3000000000L   floatSystem.Single4 BytesSingle-precision floating point (~7 digits)   3.14f   doubleSystem.Double8 BytesDouble-precision floating point (~15-17 digits)   19.99   decimalSystem.Decimal16 BytesHigh-precision financial decimal (28-29 digits)   99.95m   boolSystem.Boolean1 ByteBoolean logical flag   true or false   charSystem.Char2 BytesSingle Unicode UTF-16 character   'A'   stringSystem.StringVariableSequence of Unicode characters   "Hello, .NET"   3. Implicit Typing with varThe var keyword instructs the C# compiler to infer the variable's type automatically based on the value assigned on the right-hand side.   C#var count = 10;           // Compiler infers 'int'
+var rate = 4.5;           // Compiler infers 'double'
+var message = "Welcome";  // Compiler infers 'string'
+Important Rules for var:var is statically typed, not dynamically typed. Once inferred at compile time, the type is fixed and cannot hold values of another type.   The variable must be initialized on the line it is declared so the compiler can infer its type.   Use var when the type is obvious from the right-hand side (e.g., var stream = new MemoryStream();) to reduce code clutter.   4. Constants (const)When a variable's value must remain fixed throughout the lifetime of the program, declare it using the const keyword.   C#const double Pi = 3.14159;
+const int MaxRetries = 3;
+
+// MaxRetries = 5; // Compile-time error: The left-hand side of an assignment must be a variable
+const fields must be assigned a value at compile time (constants cannot depend on runtime evaluations).   They are immutable and evaluated directly during compilation.   5. Naming Rules & ConventionsIdentifiers must start with a letter (a-z, A-Z) or an underscore (_), followed by letters, digits, or underscores.   C# is case-sensitive (totalScore and TotalScore are different variables).   Keywords cannot be used as variable names unless prefixed with @ (e.g., @class, @int).   Conventions:Use camelCase for local variables and method parameters (e.g., studentId, itemCount).   Use PascalCase for classes, methods, and constants (e.g., CalculateTotal(), TaxRate).   6. Key TakeawaysVariables are named memory slots bound to specific data types.   C# requires local variables to be assigned before being read (Definite Assignment).   Choose numeric types deliberately: int/long for whole numbers, double for general decimals, and decimal for currency and financial calculations[cite: 30].var enables compile-time type inference without losing type safety[cite: 30].Use const for immutable compile-time values[cite: 30].
